@@ -458,8 +458,9 @@ textarea.in2{resize:none;min-height:5.6em;line-height:1.55;text-align:center;ove
 .sec.fr .ttl::after,#p7t .ttl::after{width:40%!important;transform:scaleX(0);transition:transform .9s cubic-bezier(.2,.7,.2,1) .35s!important}
 .sec.fr .t.in .ttl::after,#p7t.in .ttl::after{transform:scaleX(1)}
 /* الزخارف: fade + scale ناعم */
-.dr{scale:.9;transition:opacity 1.1s ease .15s,scale 1.5s cubic-bezier(.2,.7,.2,1) .15s!important}
-.sec.on .dr{scale:1}
+/* الزخارف: تظهر فورًا وبتترسم خط بخط؛ كل زخرفة في طبقة منفصلة عشان الرسم يفضل خفيف */
+.dr{scale:1;contain:paint;transition:opacity .25s ease!important;transition-delay:0s!important}
+.dw{transition-duration:1.5s!important}
 /* المظروف والكارت: يظهروا أول ما يدخلوا الشاشة (من غير :has) */
 #rest #p5 .env.in{opacity:1;transform:none}
 /* ضباب الغلاف يقف لما يخرج من الشاشة */
@@ -669,6 +670,16 @@ html.so #fog i{animation-play-state:paused!important}
       var r=document.querySelector(x.getAttribute('href')).cloneNode(true);r.removeAttribute('id');
       r.setAttribute('transform',x.getAttribute('transform')||'');x.parentNode.replaceChild(r,x)});
     g.querySelectorAll('[id]').forEach(function(p){p.removeAttribute('id')});
+    var n=0;
+    g.querySelectorAll('path').forEach(function(p){
+      var lf=!!p.getAttribute('fill-opacity');
+      p.setAttribute('pathLength','1');
+      p.setAttribute('class','dw'+(lf?' lf':''));
+      if(lf){p.style.transitionProperty='stroke-dashoffset,fill-opacity';p.style.transitionDelay=(n*.06).toFixed(2)+'s,'+(.9+n*.04).toFixed(2)+'s'}
+      else p.style.transitionDelay=(n*.06).toFixed(2)+'s';
+      n++;
+    });
+    g.querySelectorAll('circle,[fill="#6e1a2d"]').forEach(function(p){p.setAttribute('class','pp');p.style.transitionDelay='1.2s'});
     svg.replaceChild(g,u);
   }
   document.querySelectorAll('.dr svg,svg.fl').forEach(inline);
