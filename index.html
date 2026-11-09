@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#3a241c">
 <script>
+  /* سرعة السكرول التلقائي (بكسل/ثانية) — غيّر الرقم ده بس، وكل الحركات هتتظبط معاه تلقائي */
+  window.SCROLL_SPEED=90;
+  document.documentElement.style.setProperty('--sp',(90/window.SCROLL_SPEED).toFixed(3));
+</script>
+<script>
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
   scrollTo(0, 0);
   addEventListener('pageshow', function (e) {
@@ -470,6 +475,44 @@ html.so #fog i{animation-play-state:paused!important}
 .t>*{backface-visibility:hidden}
 @media(prefers-reduced-motion:reduce){.sec.fr::before{opacity:1;transform:none;transition:none!important}.sec.fr .ttl::after,#p7t .ttl::after{transform:none;transition:none!important}.dr{scale:1;transition:none!important}.t.in .dn,.sec.fr .t.in .ttl{animation:none}}
 </style>
+<style id="sync">
+/* ===== مزامنة مع سرعة السكرول: كل الأزمنة × --sp ===== */
+.t>*{transition-duration:calc(.9s*var(--sp,1))!important}
+.t.in>:nth-child(1){transition-delay:calc(0.0s*var(--sp,1))!important}
+.t.in>:nth-child(2){transition-delay:calc(0.1s*var(--sp,1))!important}
+.t.in>:nth-child(3){transition-delay:calc(0.2s*var(--sp,1))!important}
+.t.in>:nth-child(4){transition-delay:calc(0.3s*var(--sp,1))!important}
+.t.in>:nth-child(5){transition-delay:calc(0.4s*var(--sp,1))!important}
+.t.in>:nth-child(6){transition-delay:calc(0.5s*var(--sp,1))!important}
+.t.in>:nth-child(7){transition-delay:calc(0.6s*var(--sp,1))!important}
+.t.in>:nth-child(8){transition-delay:calc(0.7s*var(--sp,1))!important}
+.t.in>:nth-child(9){transition-delay:calc(0.8s*var(--sp,1))!important}
+#rest #p5 .env,#rest #p5 .tray,#rest #p6 .vsh{transition-duration:calc(1s*var(--sp,1))!important}
+.dw{transition-duration:calc(1.5s*var(--sp,1))!important}
+.lf{transition-duration:calc(.9s*var(--sp,1))!important}
+.pp{transition-duration:calc(.8s*var(--sp,1))!important}
+.dr{transition-duration:calc(.25s*var(--sp,1))!important}
+#rest #p5 .ph{transition-duration:calc(.4s*var(--sp,1)),calc(1.05s*var(--sp,1))!important}
+.sec.fr::before{transition-duration:calc(.9s*var(--sp,1)),calc(1.3s*var(--sp,1))!important}
+.t.in .dn,.sec.fr .t.in .ttl{animation-duration:calc(2.6s*var(--sp,1))}
+/* الزخارف بتترسم لما الزخرفة نفسها تدخل الشاشة (مش القسم كله) */
+.sec.on .dr:not(.in){opacity:0}
+.sec.on .dr.in{opacity:.9}
+.sec.on .dr:not(.in) .dw{stroke-dashoffset:1.03}
+.sec.on .dr:not(.in) .lf{fill-opacity:0!important}
+.sec.on .dr:not(.in) .pp{opacity:0}
+.dr.in .dw{stroke-dashoffset:0}
+.sec .dr.in .lf{fill-opacity:.16!important}
+.dr.in .pp{opacity:1}
+/* الفواصل الصغيرة: ترسم مع ظهور النص مش قبله */
+.sec.on svg.fl .dw{stroke-dashoffset:1.03}
+.sec.on svg.fl .lf{fill-opacity:0!important}
+.sec.on svg.fl .pp{opacity:0}
+.t.in svg.fl .dw{stroke-dashoffset:0}
+.t.in svg.fl .lf{fill-opacity:.16!important}
+.t.in svg.fl .pp{opacity:1}
+@media(prefers-reduced-motion:reduce){.sec.on .dr:not(.in){opacity:.9}.sec.on .dr:not(.in) .dw,.sec.on svg.fl .dw{stroke-dashoffset:0}.sec.on .dr:not(.in) .lf,.sec.on svg.fl .lf{fill-opacity:.16!important}.sec.on .dr:not(.in) .pp,.sec.on svg.fl .pp{opacity:1}}
+</style>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><symbol id="sprig" viewBox="0 0 120 160"><path d="M8 152C26 108 52 62 98 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><g transform="translate(16.1 133.4) rotate(-113.3) scale(1.07)"><path d="M0 0C7 -9 19 -9 27 0C19 9 7 9 0 0Z" fill="currentColor" fill-opacity=".16" stroke="currentColor" stroke-width="1.1"/><path d="M2 0H22" stroke="currentColor" stroke-width=".7" opacity=".7"/></g><g transform="translate(16.1 133.4) rotate(-17.3) scale(1.07)"><path d="M0 0C7 -9 19 -9 27 0C19 9 7 9 0 0Z" fill="currentColor" fill-opacity=".16" stroke="currentColor" stroke-width="1.1"/><path d="M2 0H22" stroke="currentColor" stroke-width=".7" opacity=".7"/></g><g transform="translate(23.9 117.3) rotate(-113.0) scale(0.99)"><path d="M0 0C7 -9 19 -9 27 0C19 9 7 9 0 0Z" fill="currentColor" fill-opacity=".16" stroke="currentColor" stroke-width="1.1"/><path d="M2 0H22" stroke="currentColor" stroke-width=".7" opacity=".7"/></g><g transform="translate(23.9 117.3) rotate(-13.0) scale(0.99)"><path d="M0 0C7 -9 19 -9 27 0C19 9 7 9 0 0Z" fill="currentColor" fill-opacity=".16" stroke="currentColor" stroke-width="1.1"/><path d="M2 0H22" stroke="currentColor" stroke-width=".7" opacity=".7"/></g><g transform="translate(32.6 101.0) rotate(-109.4) scale(0.92)"><path d="M0 0C7 -9 19 -9 27 0C19 9 7 9 0 0Z" fill="currentColor" fill-opacity=".16" stroke="currentColor" stroke-width="1.1"/><path d="M2 0H22" stroke="currentColor" stroke-width=".7" opacity=".7"/></g><g transform="translate(32.6 101.0) rotate(-11.4) scale(0.92)"><path d="M0 0C7 -9 19 -9 27 0C19 9 7 9 0 0Z" fill="currentColor" fill-opacity=".16" stroke="currentColor" stroke-width="1.1"/><path d="M2 0H22" stroke="currentColor" stroke-width=".7" opacity=".7"/></g><g transform="translate(42.5 84.5) rotate(-105.8) scale(0.85)"><path d="M0 0C7 -9 19 -9 27 0C19 9 7 9 0 0Z" fill="currentColor" fill-opacity=".16" stroke="currentColor" stroke-width="1.1"/><path d="M2 0H22" stroke="currentColor" stroke-width=".7" opacity=".7"/></g><g transform="translate(42.5 84.5) rotate(-9.8) scale(0.85)"><path d="M0 0C7 -9 19 -9 27 0C19 9 7 9 0 0Z" fill="currentColor" fill-opacity=".16" stroke="currentColor" stroke-width="1.1"/><path d="M2 0H22" stroke="currentColor" stroke-width=".7" opacity=".7"/></g><g transform="translate(53.6 67.9) rotate(-105.0) scale(0.78)"><path d="M0 0C7 -9 19 -9 27 0C19 9 7 9 0 0Z" fill="currentColor" fill-opacity=".16" stroke="currentColor" stroke-width="1.1"/><path d="M2 0H22" stroke="currentColor" stroke-width=".7" opacity=".7"/></g><g transform="translate(53.6 67.9) rotate(-5.0) scale(0.78)"><path d="M0 0C7 -9 19 -9 27 0C19 9 7 9 0 0Z" fill="currentColor" fill-opacity=".16" stroke="currentColor" stroke-width="1.1"/><path d="M2 0H22" stroke="currentColor" stroke-width=".7" opacity=".7"/></g><g transform="translate(66.0 51.0) rotate(-101.2) scale(0.71)"><path d="M0 0C7 -9 19 -9 27 0C19 9 7 9 0 0Z" fill="currentColor" fill-opacity=".16" stroke="currentColor" stroke-width="1.1"/><path d="M2 0H22" stroke="currentColor" stroke-width=".7" opacity=".7"/></g><g transform="translate(66.0 51.0) rotate(-3.2) scale(0.71)"><path d="M0 0C7 -9 19 -9 27 0C19 9 7 9 0 0Z" fill="currentColor" fill-opacity=".16" stroke="currentColor" stroke-width="1.1"/><path d="M2 0H22" stroke="currentColor" stroke-width=".7" opacity=".7"/></g><g transform="translate(79.8 34.0) rotate(-97.4) scale(0.63)"><path d="M0 0C7 -9 19 -9 27 0C19 9 7 9 0 0Z" fill="currentColor" fill-opacity=".16" stroke="currentColor" stroke-width="1.1"/><path d="M2 0H22" stroke="currentColor" stroke-width=".7" opacity=".7"/></g><g transform="translate(79.8 34.0) rotate(-1.4) scale(0.63)"><path d="M0 0C7 -9 19 -9 27 0C19 9 7 9 0 0Z" fill="currentColor" fill-opacity=".16" stroke="currentColor" stroke-width="1.1"/><path d="M2 0H22" stroke="currentColor" stroke-width=".7" opacity=".7"/></g><path d="M38 100C22 96 14 84 20 74C25 66 34 70 32 77" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity=".8"/><g transform="translate(98.0 14.0)"><ellipse cx="0" cy="-7" rx="3.6" ry="7" transform="rotate(0)" fill="#6e1a2d" fill-opacity=".22" stroke="#6e1a2d" stroke-width="1"/><ellipse cx="0" cy="-7" rx="3.6" ry="7" transform="rotate(72)" fill="#6e1a2d" fill-opacity=".22" stroke="#6e1a2d" stroke-width="1"/><ellipse cx="0" cy="-7" rx="3.6" ry="7" transform="rotate(144)" fill="#6e1a2d" fill-opacity=".22" stroke="#6e1a2d" stroke-width="1"/><ellipse cx="0" cy="-7" rx="3.6" ry="7" transform="rotate(216)" fill="#6e1a2d" fill-opacity=".22" stroke="#6e1a2d" stroke-width="1"/><ellipse cx="0" cy="-7" rx="3.6" ry="7" transform="rotate(288)" fill="#6e1a2d" fill-opacity=".22" stroke="#6e1a2d" stroke-width="1"/><circle r="2.6" fill="#b0804d"/></g><circle cx="60" cy="118" r="2" fill="#6e1a2d" fill-opacity=".55"/><circle cx="44" cy="134" r="2" fill="#6e1a2d" fill-opacity=".55"/></symbol><symbol id="flr" viewBox="0 0 200 24"><g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"><path id="fh" d="M96 12C88 5 78 4 70 10C62 16 52 17 46 11C40 5 31 6 22 12"/><path d="M70 10C66 4 60 3 56 6"/><path d="M46 11C44 18 38 20 33 17"/><use href="#fh" transform="translate(200 0) scale(-1 1)"/><path d="M144 10C148 4 154 3 158 6M154 11C156 18 162 20 167 17" /></g><path d="M100 5L106 12L100 19L94 12Z" fill="#6e1a2d" fill-opacity=".85"/><circle cx="12" cy="12" r="1.8" fill="currentColor"/><circle cx="188" cy="12" r="1.8" fill="currentColor"/></symbol></defs></svg>
@@ -626,7 +669,11 @@ html.so #fog i{animation-play-state:paused!important}
   var o=document.querySelectorAll('.orn');for(var i=1;i<o.length;i++)o[i].src=o[0].src;
   $('sr').src=$('sl').src;
   function mk(opt){var o=new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting)return;var c=e.target.classList;c.add(c.contains('sec')?'on':'in');o.unobserve(e.target)})},opt);return o}
-  var ioBig=mk({threshold:0,rootMargin:'0px 0px -6% 0px'}),ioTxt=mk({threshold:.08,rootMargin:'0px 0px -5% 0px'});
+  var SP=window.SCROLL_SPEED||90,
+      ioBig=mk({threshold:0,rootMargin:'0px 0px -'+Math.round(SP*.3)+'px 0px'}),
+      ioTxt=mk({threshold:0,rootMargin:'0px 0px -'+Math.round(Math.max(50,SP*.75))+'px 0px'}),
+      ioDr=mk({threshold:0,rootMargin:'0px 0px -'+Math.round(Math.max(40,SP*.55))+'px 0px'});
+  document.querySelectorAll('.dr').forEach(function(t){ioDr.observe(t)});
   document.querySelectorAll('.sec,.env,.vshape').forEach(function(t){ioBig.observe(t)});
   document.querySelectorAll('.t').forEach(function(t){ioTxt.observe(t)});
   document.addEventListener('invite:ready',function(){document.documentElement.classList.remove('lock');$('more').classList.add('on')});
@@ -650,7 +697,7 @@ html.so #fog i{animation-play-state:paused!important}
     st.setProperty('--r',rnd(-8,8).toFixed(1)+'deg');
     st.setProperty('--fr',(side*rnd(25,55)).toFixed(0)+'deg');
     st.setProperty('--fx',(side*rnd(115,150)).toFixed(0)+'cqw');
-    st.setProperty('--d',(0.25+i*0.32).toFixed(2)+'s');
+    st.setProperty('--d','calc(var(--sp,1)*'+(0.25+i*0.32).toFixed(2)+'s)');
     st.setProperty('--z',i+1);
   });
   var io=new IntersectionObserver(function(es){es.forEach(function(e){
@@ -675,11 +722,11 @@ html.so #fog i{animation-play-state:paused!important}
       var lf=!!p.getAttribute('fill-opacity');
       p.setAttribute('pathLength','1');
       p.setAttribute('class','dw'+(lf?' lf':''));
-      if(lf){p.style.transitionProperty='stroke-dashoffset,fill-opacity';p.style.transitionDelay=(n*.06).toFixed(2)+'s,'+(.9+n*.04).toFixed(2)+'s'}
-      else p.style.transitionDelay=(n*.06).toFixed(2)+'s';
+      if(lf){p.style.transitionProperty='stroke-dashoffset,fill-opacity';p.style.transitionDelay='calc(var(--sp,1)*'+(n*.06).toFixed(2)+'s),calc(var(--sp,1)*'+(.9+n*.04).toFixed(2)+'s)'}
+      else p.style.transitionDelay='calc(var(--sp,1)*'+(n*.06).toFixed(2)+'s)';
       n++;
     });
-    g.querySelectorAll('circle,[fill="#6e1a2d"]').forEach(function(p){p.setAttribute('class','pp');p.style.transitionDelay='1.2s'});
+    g.querySelectorAll('circle,[fill="#6e1a2d"]').forEach(function(p){p.setAttribute('class','pp');p.style.transitionDelay='calc(var(--sp,1)*1.2s)'});
     svg.replaceChild(g,u);
   }
   document.querySelectorAll('.dr svg,svg.fl').forEach(inline);
@@ -768,7 +815,7 @@ html.ar #fog i{animation-play-state:paused!important}
 /* سكرول تلقائي هادي + زر إيقاف/تشغيل + ضبط سرعة الحركات مع سرعة السكرول
    الحركة بتتنفّذ بالـ GPU (transform) مش بسكرول الصفحة نفسه، عشان تفضل ناعمة حتى لو الصفحة تقيلة */
 (function(){
-  var SPEED=90,DELAY=800;               /* SPEED = بكسل في الثانية: زوّده للأسرع وقلّله للأبطأ */
+  var SPEED=window.SCROLL_SPEED||90,DELAY=800;               /* SPEED = بكسل في الثانية: زوّده للأسرع وقلّله للأبطأ */
   if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;
   var root=document.documentElement,btn=document.getElementById('autoBtn'),bar=document.getElementById('bar');
   var els=[document.getElementById('stage'),document.getElementById('rest')].filter(Boolean);
