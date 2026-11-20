@@ -829,13 +829,31 @@ html.ar #fog i{animation-play-state:paused!important}
 
   /* ---- تثبيت مكان السكرول الفعلي وإلغاء الـ transform ---- */
   function shift(){var a=anims[0];if(!a||a.currentTime==null)return 0;return Math.max(0,Math.min(total,a.currentTime/1000*SPEED))}
+  /* قفزة فورية (بدون smooth) للمكان الحقيقي */
+  function jump(v){
+    root.style.scrollBehavior='auto';
+    try{scrollTo({top:v,left:0,behavior:'instant'})}catch(_){scrollTo(0,v)}
+  }
+  /* لما اليوزر يلمس الشاشة، المتصفح بيبدأ السكرول من مكان قديم (قبل الحركة)،
+     فبنراقب كام فريم، ولو رجّعنا لفوق بنصحّح المكان ونكمّل من نفس النقطة */
+  function guard(target){
+    var t0=performance.now();
+    (function chk(){
+      if(state==='running'||state==='done')return;
+      var cur=scrollY;
+      if(target-base>300&&cur<base+120){jump(target+Math.max(0,cur-base))}
+      if(performance.now()-t0<900)requestAnimationFrame(chk);
+      else root.style.scrollBehavior='';
+    })();
+  }
   function commit(forceEnd){
     clearInterval(barT);
     if(!anims.length)return;
-    var sh=forceEnd?total:shift();
-    scrollTo(0,base+sh);
+    var sh=forceEnd?total:shift(),target=base+sh;
     anims.forEach(function(a){a.onfinish=null;a.cancel()});anims=[];
     els.forEach(function(e){e.style.willChange=''});
+    jump(target);
+    if(!forceEnd)guard(target);
   }
   function updateBar(){
     if(!bar||!anims.length)return;
@@ -845,7 +863,7 @@ html.ar #fog i{animation-play-state:paused!important}
   function stopAll(){
     cancelAnimationFrame(raf);
     if(GPU)commit(false);
-    root.classList.remove('ar');root.style.scrollBehavior='';
+    root.classList.remove('ar');if(!GPU)root.style.scrollBehavior='';
   }
   function pause(){
     if(state==='wait'){state='paused';ui();return}
