@@ -935,7 +935,7 @@ html.ar #fog i{animation-play-state:paused!important}
 /* سكرول تلقائي هادي + زر إيقاف/تشغيل + ضبط سرعة الحركات مع سرعة السكرول
    الحركة بتتنفّذ بالـ GPU (transform) مش بسكرول الصفحة نفسه، عشان تفضل ناعمة حتى لو الصفحة تقيلة */
 (function(){
-  var SPEED=window.SCROLL_SPEED||90,DELAY=800;               /* SPEED = بكسل في الثانية: زوّده للأسرع وقلّله للأبطأ */
+  var SPEED=window.SCROLL_SPEED||90,DELAY=1500;               /* SPEED = بكسل في الثانية: زوّده للأسرع وقلّله للأبطأ */
   if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;
   var root=document.documentElement,btn=document.getElementById('autoBtn'),bar=document.getElementById('bar');
   var els=[document.getElementById('stage'),document.getElementById('rest')].filter(Boolean);
