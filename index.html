@@ -47,6 +47,15 @@ body{font-family:"Amiri","Noto Naskh Arabic",serif}
 #stage video,#stage .layer{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 #photo{opacity:0;transition:none;pointer-events:none}
 #photo.show{opacity:1}
+#vid2{opacity:0;transform:scale(1.14);filter:blur(10px);pointer-events:none;will-change:opacity,transform,filter}
+#vid2.show{opacity:1;transform:scale(1);filter:blur(0);transition:opacity 1.3s ease,transform 2.6s cubic-bezier(.2,.7,.2,1),filter 1.8s ease}
+#vid2.bad{display:none}
+#vid{transition:transform 1.6s cubic-bezier(.4,0,.6,1),filter 1.6s ease;will-change:transform}
+#vid.push{transform:scale(1.07);filter:brightness(1.08) saturate(1.05)}
+#xflash{position:absolute;inset:0;pointer-events:none;opacity:0;background:radial-gradient(ellipse 70% 60% at 50% 45%,rgba(255,238,208,.95),rgba(247,222,184,.55) 45%,rgba(247,222,184,0) 78%)}
+#xflash.go{animation:xfl 1.7s ease-out forwards}
+@keyframes xfl{0%{opacity:0}28%{opacity:.62}100%{opacity:0}}
+@media (prefers-reduced-motion:reduce){#vid2,#vid2.show{transform:none;filter:none}#vid2.show{transition:opacity .8s ease}#vid.push{transform:none;filter:none}#xflash.go{animation:none}}
 #fog{position:absolute;inset:0;overflow:hidden;pointer-events:none;opacity:0;background:linear-gradient(180deg,#f6ece0 0%,#efe1d1 55%,#f3e7d9 100%);transition:opacity 2.4s cubic-bezier(.4,0,.2,1)}
 #fog.show{opacity:.82;will-change:opacity;transition:opacity 4.2s cubic-bezier(.45,0,.3,1)}
 #fog i{position:absolute;left:-60%;width:220%;height:68%;will-change:transform;backface-visibility:hidden;
@@ -592,7 +601,8 @@ html.so #fog i{animation-play-state:paused!important}
 <div id="bar"></div><div id="toast" role="status" aria-live="polite"></div><canvas id="dust" aria-hidden="true"></canvas>
 <div id="stage" role="button" tabindex="0" aria-label="اضغط لفتح الدعوة">
   <video id="vid" muted playsinline webkit-playsinline preload="auto" poster="img07.jpg" src="intro.mp4"></video>
-  <img id="photo" class="layer" alt="" src="img09.jpg">
+  <video id="vid2" class="layer" muted loop playsinline webkit-playsinline preload="auto" src="names.mp4"></video>
+  <div id="xflash" aria-hidden="true"></div>
   <div id="fog" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
   <div id="names"><span class="eb">حفل زفاف</span><span class="n n1">حازم</span><span class="amp">و</span><span class="n n2">أميرة</span><span class="sb" id="nd"></span><span class="sb2">ندعوكم مع عائلتينا<br>لمشاركتنا فرحتنا</span></div>
   <div id="hint">المس الفيونكة<br>لفتح الدعوة<svg viewBox="0 0 24 56" width="24" height="56" fill="none" stroke="#6e4034" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v46"/><path d="M4 41l8 10 8-10"/></svg></div>
@@ -639,7 +649,7 @@ setTimeout(function(){f.classList.add('in')},60000)
 <img id="sl" class="side" alt="" src="img21.webp"><img id="sr" class="side" alt="">
 <script>
 (function(){
-  var $=function(i){return document.getElementById(i)},vid=$('vid'),photo=$('photo'),fog=$('fog'),names=$('names'),hint=$('hint'),stage=$('stage'),dust=$('dust'),
+  var $=function(i){return document.getElementById(i)},vid=$('vid'),vid2=$('vid2'),fog=$('fog'),names=$('names'),hint=$('hint'),stage=$('stage'),dust=$('dust'),
       started=false,revealed=false,rm=matchMedia('(prefers-reduced-motion:reduce)').matches;
   var cover=document.createElement('img');
   cover.className='layer';cover.alt='';cover.src=vid.poster;cover.style.pointerEvents='none';
@@ -703,9 +713,31 @@ setTimeout(function(){f.classList.add('in')},60000)
         c.globalAlpha=1}
       requestAnimationFrame(f)})(0);
   }
+  var vid2Bad=false,xf=false,xshown=false;
+  var xflash=$('xflash'),XF=1.0;
+  function crossfade(){
+    if(xf)return;xf=true;
+    if(!vid2||vid2Bad){vid2Fallback();return}
+    function go(){
+      if(xshown)return;xshown=true;
+      vid.classList.add('push');
+      xflash.classList.add('go');
+      vid2.classList.add('show');
+      setTimeout(function(){vid.style.visibility='hidden'},1700);
+    }
+    vid2.addEventListener('playing',go,{once:true});
+    setTimeout(go,900);
+    var p2=vid2.play();
+    if(p2&&p2.catch)p2.catch(function(){vid2Fallback()});
+  }
+  vid.addEventListener('timeupdate',function(){
+    if(!xf&&isFinite(vid.duration)&&vid.duration>XF+0.5&&vid.duration-vid.currentTime<=XF)crossfade();
+  });
+  function vid2Fallback(){vid2Bad=true;if(vid2)vid2.classList.add('bad');fog.classList.add('show')}
+  if(vid2)vid2.addEventListener('error',function(){if(revealed)vid2Fallback();else vid2Bad=true});
   function reveal(){
     if(revealed)return;revealed=true;
-    if(!vid.ended)photo.classList.add('show');fog.classList.add('show');
+    crossfade();
     setTimeout(function(){names.classList.add('show')},1100);
     setTimeout(dustOn,1100);
     setTimeout(function(){document.dispatchEvent(new CustomEvent('invite:ready'))},2300);
