@@ -54,6 +54,14 @@ body{font-family:"Amiri","Noto Naskh Arabic",serif}
 #vid.push{transform:scale(1.07);filter:brightness(1.08) saturate(1.05)}
 #xflash{position:absolute;inset:0;pointer-events:none;opacity:0;background:radial-gradient(ellipse 70% 60% at 50% 45%,rgba(255,238,208,.95),rgba(247,222,184,.55) 45%,rgba(247,222,184,0) 78%)}
 #xflash.go{animation:xfl 1.7s ease-out forwards}
+#vshade{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity 1.8s ease;background:linear-gradient(180deg,rgba(18,8,4,.55) 0%,rgba(18,8,4,.38) 45%,rgba(18,8,4,.52) 100%)}
+#vshade.on{opacity:1}
+#stage.dk #names,#stage.dk #names .n,#stage.dk #names .eb,#stage.dk #names .sb{color:#fff3df!important;text-shadow:0 2px 16px rgba(14,5,2,.7),0 0 3px rgba(14,5,2,.45)}
+#stage.dk #names .amp{color:#f2d4a6!important;text-shadow:0 2px 14px rgba(14,5,2,.7)}
+#stage.dk #names .sb2{color:#f6e3c4!important;text-shadow:0 2px 14px rgba(14,5,2,.7)}
+#stage.dk #names .sb::after{background:linear-gradient(90deg,transparent,#e0b67a,transparent)}
+#stage.dk #more{color:#fbeed6;text-shadow:0 2px 12px rgba(14,5,2,.8)}
+#stage.dk #more svg{stroke:#f6e3c4}
 @keyframes xfl{0%{opacity:0}28%{opacity:.62}100%{opacity:0}}
 @media (prefers-reduced-motion:reduce){#vid2,#vid2.show{transform:none;filter:none}#vid2.show{transition:opacity .8s ease}#vid.push{transform:none;filter:none}#xflash.go{animation:none}}
 #fog{position:absolute;inset:0;overflow:hidden;pointer-events:none;opacity:0;background:linear-gradient(180deg,#f6ece0 0%,#efe1d1 55%,#f3e7d9 100%);transition:opacity 2.4s cubic-bezier(.4,0,.2,1)}
@@ -603,6 +611,7 @@ html.so #fog i{animation-play-state:paused!important}
   <video id="vid" muted playsinline webkit-playsinline preload="auto" poster="img07.jpg" src="intro.mp4"></video>
   <video id="vid2" class="layer" muted loop playsinline webkit-playsinline preload="auto" src="names.mp4"></video>
   <div id="xflash" aria-hidden="true"></div>
+  <div id="vshade" aria-hidden="true"></div>
   <div id="fog" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
   <div id="names"><span class="eb">حفل زفاف</span><span class="n n1">حازم</span><span class="amp">و</span><span class="n n2">أميرة</span><span class="sb" id="nd"></span><span class="sb2">ندعوكم مع عائلتينا<br>لمشاركتنا فرحتنا</span></div>
   <div id="hint">المس الفيونكة<br>لفتح الدعوة<svg viewBox="0 0 24 56" width="24" height="56" fill="none" stroke="#6e4034" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v46"/><path d="M4 41l8 10 8-10"/></svg></div>
@@ -723,6 +732,7 @@ setTimeout(function(){f.classList.add('in')},60000)
       vid.classList.add('push');
       xflash.classList.add('go');
       vid2.classList.add('show');
+      $('vshade').classList.add('on');stage.classList.add('dk');
       setTimeout(function(){vid.style.visibility='hidden'},1700);
     }
     vid2.addEventListener('playing',go,{once:true});
@@ -968,7 +978,7 @@ html.ar #fog i{animation-play-state:paused!important}
 /* سكرول تلقائي هادي + زر إيقاف/تشغيل + ضبط سرعة الحركات مع سرعة السكرول
    الحركة بتتنفّذ بالـ GPU (transform) مش بسكرول الصفحة نفسه، عشان تفضل ناعمة حتى لو الصفحة تقيلة */
 (function(){
-  var SPEED=window.SCROLL_SPEED||90,DELAY=1500;               /* SPEED = بكسل في الثانية: زوّده للأسرع وقلّله للأبطأ */
+  var SPEED=window.SCROLL_SPEED||90,DELAY=4000;               /* SPEED = بكسل في الثانية: زوّده للأسرع وقلّله للأبطأ */
   if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;
   var root=document.documentElement,btn=document.getElementById('autoBtn'),bar=document.getElementById('bar');
   var els=[document.getElementById('stage'),document.getElementById('rest')].filter(Boolean);
